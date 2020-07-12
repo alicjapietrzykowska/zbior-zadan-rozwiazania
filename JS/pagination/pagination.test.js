@@ -35,6 +35,50 @@ test("Should return the expected array of numbers", () => {
     expect(result[result.length - 1]).toBe(expectedLastElementOfArray);
 });
 
+test("Should throw an error when entries aren't provided", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = null;
+    const settings = {
+        actualPageIdx: 1, 
+        entriesOnPage: 5
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid array of entries');
+});
+
+test("Should throw an error when array of entries is empty", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = [];
+    const settings = {
+        actualPageIdx: 1, 
+        entriesOnPage: 5
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid array of entries');
+});
+
+test("Should throw an error when type of entries is invalid", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = 'random_string';
+    const settings = {
+        actualPageIdx: 1, 
+        entriesOnPage: 5
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid array of entries');
+});
+
+test("Should throw an error when actualPageIdx isn't provided", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = getArrayOfEntries(50);
+    const settings = {
+        actualPageIdx: null, 
+        entriesOnPage: 5
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid page index');
+});
+
 test("Should throw an error when actualPageIdx is 0", () => {
     const consoleSpy = jest.spyOn(console, 'log');
     const entries = getArrayOfEntries(50);
@@ -66,6 +110,39 @@ test("Should throw an error when called with an invalid type of actualPageIdx", 
     }
     expect(paginateArray(entries, settings)).toBeUndefined();
     expect(consoleSpy).toHaveBeenCalledWith('Invalid page index');
+});
+
+test("Should throw an error when entriesOnPage isn't provided", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = getArrayOfEntries(50);
+    const settings = {
+        actualPageIdx: 9, 
+        entriesOnPage: null
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid number of entries');
+});
+
+test("Should throw an error when entriesOnPage is 0", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = getArrayOfEntries(50);
+    const settings = {
+        actualPageIdx: 9, 
+        entriesOnPage: 0
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid number of entries');
+});
+
+test("Should throw an error when entriesOnPage is a negative number", () => {
+    const consoleSpy = jest.spyOn(console, 'log');
+    const entries = getArrayOfEntries(50);
+    const settings = {
+        actualPageIdx: 9, 
+        entriesOnPage: -5
+    }
+    expect(paginateArray(entries, settings)).toBeUndefined();
+    expect(consoleSpy).toHaveBeenCalledWith('Invalid number of entries');
 });
 
 test("Should return all elements when page index is 1 and number of entries on page is larger than number of elements", () => {

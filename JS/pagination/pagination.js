@@ -2,8 +2,18 @@
 const paginateArray = (dataEntries, settings) => {
     const {actualPageIdx, entriesOnPage} = settings;
 
-    if (typeof actualPageIdx !== 'number' || actualPageIdx <= 0)  {
+    if (!dataEntries || !dataEntries.length || !Array.isArray(dataEntries)) {
+        console.log('Invalid array of entries');
+        return;
+    }
+
+    if (!actualPageIdx || typeof actualPageIdx !== 'number' || actualPageIdx <= 0)  {
         console.log('Invalid page index')
+        return;
+    }
+
+    if (!entriesOnPage || typeof entriesOnPage !== 'number' || entriesOnPage <= 0) {
+        console.log('Invalid number of entries');
         return;
     }
 
