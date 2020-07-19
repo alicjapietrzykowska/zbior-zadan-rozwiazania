@@ -3,40 +3,36 @@
 class DatePro {
     
     constructor(dateAsString, inputDateFormat='DD.MM.YYYY'){
-        let dayRegex;
-        let monthRegex;
-        let yearRegex;
-        if (inputDateFormat.includes('D')) { 
-            dayRegex = RegExp(/D+/g).exec(inputDateFormat);
-            this.day = dateAsString.slice(dayRegex.index, dayRegex.index + dayRegex[0].length);
-        }
-        if (inputDateFormat.includes('M')) { 
-            monthRegex = RegExp(/M+/g).exec(inputDateFormat);
-            this.month = dateAsString.slice(monthRegex.index, monthRegex.index + monthRegex[0].length);
-        }
-        if (inputDateFormat.includes('Y')) {
-            yearRegex = RegExp(/Y+/g).exec(inputDateFormat);
-            this.year = dateAsString.slice(yearRegex.index, yearRegex.index + yearRegex[0].length);
-        } else {
-            this.year = new Date().getFullYear();
-        }
+        this.dateAsString = dateAsString;
+        this.inputDateFormat = inputDateFormat;
+        if (inputDateFormat.includes('D')) this.day = this.getValue('D');
+        if (inputDateFormat.includes('M')) this.month = this.getValue('M');
+        if (inputDateFormat.includes('Y')) this.year = this.getValue('Y');
+        else this.year = String(new Date().getFullYear());
+    }
+
+    getValue(dateSymbol) {
+        const regex = new RegExp(`${dateSymbol}+`, 'g');
+        const symbolRegex = regex.exec(this.inputDateFormat);
+        return this.dateAsString.slice(symbolRegex.index, symbolRegex.index + symbolRegex[0].length);
     }
 
     format(outputStringFormat='DD.MM.YYYY'){
-
+        let formattedDate = outputStringFormat;
         if (this.day) { 
-            this.day = String(this.day).padStart(2, '0');
-            outputStringFormat = outputStringFormat.replace(/D+/g, this.day);
+            this.day = this.day.padStart(2, '0');
+            formattedDate = formattedDate.replace(/D+/g, this.day);
         }
         if (this.month) { 
-            this.month = String(this.month).padStart(2, '0');
-            outputStringFormat = outputStringFormat.replace(/M+/g, this.month);
+            this.month = this.month.padStart(2, '0');
+            formattedDate = formattedDate.replace(/M+/g, this.month);
         }
         if (this.year) { 
-            this.year = String(this.year).padStart(4, '20');
-            outputStringFormat = outputStringFormat.replace(/Y+/g, this.year);
+            this.year = this.year.padStart(4, '20');
+            formattedDate = formattedDate.replace(/Y+/g, this.year);
         }
-        return outputStringFormat;
+        
+        return formattedDate;
     }
 }
 
